@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0d">
+  <meta name="description" content="Una historia hecha con amor para Victoria.">
+  <title>Victoria & Miguel — Nuestra historia</title>
+  <style>
+    :root {
+      --bg: #0b0b0d;
+      --panel: #141416;
+      --panel-soft: #1b1719;
+      --red: #e23d52;
+      --red-soft: #a92338;
+      --white: #f7f3f2;
+      --muted: #b8b0b2;
+      --line: rgba(255,255,255,.11);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 78px; }
+    body {
+      margin: 0; color: var(--white); background: var(--bg);
+      font-family: var(--sans); line-height: 1.6; overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -2;
+      background:
+        radial-gradient(ellipse at 12% 10%, rgba(151,20,43,.17), transparent 35%),
+        radial-gradient(ellipse at 90% 45%, rgba(255,255,255,.035), transparent 34%),
+        radial-gradient(ellipse at 45% 95%, rgba(134,18,36,.12), transparent 35%),
+        #0b0b0d;
+    }
+    a { color: inherit; }
+    button { font: inherit; cursor: pointer; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20; display: flex; align-items: center;
+      justify-content: space-between; gap: 18px; padding: 14px clamp(18px, 5vw, 70px);
+      background: rgba(11,11,13,.86); border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+    .brand { font-family: var(--serif); font-size: 1.15rem; letter-spacing: .08em; text-decoration: none; }
+    .brand span { color: var(--red); }
+    .nav-note { color: var(--muted); font-size: .78rem; letter-spacing: .13em; text-transform: uppercase; }
+    .hero {
+      min-height: min(850px, calc(100svh - 55px)); display: grid; place-items: center;
+      padding: 76px 22px 86px; position: relative; isolation: isolate; text-align: center;
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; width: 250px; height: 250px; border-radius: 50%;
+      filter: blur(75px); opacity: .22; z-index: -1; animation: glow 7s ease-in-out infinite alternate;
+    }
+    .hero::before { background: #d51d3e; left: -100px; top: 18%; }
+    .hero::after { background: #fff; right: -140px; bottom: 8%; opacity: .08; animation-delay: -3s; }
+    .hero-inner { max-width: 850px; animation: rise .9s ease both; }
+    .eyebrow { color: #e6a0aa; font-size: .73rem; letter-spacing: .24em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font: clamp(3rem, 9vw, 6.7rem)/1.02 var(--serif); letter-spacing: -.045em; margin: 20px 0 18px; }
+    h1 .amp { color: var(--red); font-style: italic; }
+    .hero-subtitle { font: clamp(1.2rem, 3vw, 1.8rem) var(--serif); color: #f1e7e8; margin-bottom: 12px; }
+    .hero-copy { max-width: 570px; color: var(--muted); margin: 0 auto 27px; }
+    .hero-photo {
+      width: min(100%, 440px); aspect-ratio: 4/3; margin: 28px auto 20px; overflow: hidden;
+      border: 1px solid rgba(226,61,82,.4); border-radius: 18px; position: relative;
+      background: linear-gradient(135deg, #251117, #151517 55%, #38121b);
+      box-shadow: 0 25px 90px rgba(0,0,0,.42), 0 0 45px rgba(226,61,82,.08);
+    }
+    .hero-photo img, .memory-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .placeholder {
+      position: absolute; inset: 0; display: grid; place-items: center; padding: 20px;
+      text-align: center; color: #e7c7cc;
+      background: radial-gradient(circle at 50% 35%, rgba(226,61,82,.22), transparent 48%),
+        linear-gradient(135deg, #241016, #111113 60%, #2a1017);
+    }
+    .placeholder .heart { font-size: 2rem; display: block; color: var(--red); }
+    .hero-photo img:not([src]), .hero-photo img[src=""] { display: none; }
+    .date-pill {
+      display: inline-flex; gap: 9px; align-items: center; border: 1px solid var(--line);
+      padding: 7px 14px; border-radius: 999px; color: #e9dfe1; font-size: .83rem;
+      background: rgba(255,255,255,.035);
+    }
+    .btn {
+      border: 1px solid var(--red); border-radius: 999px; padding: 13px 21px;
+      background: var(--red); color: white; font-weight: 650; text-decoration: none;
+      display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+      box-shadow: 0 8px 30px rgba(226,61,82,.16);
+    }
+    .btn:hover { transform: translateY(-2px); background: #f04b60; box-shadow: 0 12px 34px rgba(226,61,82,.24); }
+    .btn.secondary { background: transparent; border-color: rgba(255,255,255,.22); box-shadow: none; }
+    .btn.secondary:hover { background: rgba(255,255,255,.06); }
+    .scroll-hint { margin-top: 23px; color: #968b8e; font-size: .8rem; animation: bob 2s ease-in-out infinite; }
+    .section { width: min(1100px, calc(100% - 38px)); margin: 0 auto; padding: 88px 0; }
+    .section-heading { max-width: 680px; margin: 0 auto 34px; text-align: center; }
+    .section-heading h2 { font: clamp(2rem, 5vw, 3.5rem)/1.1 var(--serif); margin: 10px 0 12px; }
+    .section-heading p { color: var(--muted); margin-bottom: 0; }
+    .kicker { color: #e6a0aa; text-transform: uppercase; letter-spacing: .2em; font-size: .72rem; }
+    .music-card {
+      display: grid; grid-template-columns: 180px 1fr; gap: 25px; align-items: center;
+      max-width: 780px; margin: 0 auto; padding: 20px; border: 1px solid var(--line);
+      border-radius: 22px; background: linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+    }
+    .album-art {
+      aspect-ratio: 1; border-radius: 15px; display: grid; place-items: center; overflow: hidden;
+      background: radial-gradient(circle, rgba(226,61,82,.25), transparent 50%), #191215;
+      border: 1px solid rgba(226,61,82,.25); position: relative;
+    }
+    .album-art::before { content: "♥"; font-size: 4rem; color: #e23d52; text-shadow: 0 0 35px #a92338; }
+    .album-art.playing::before { animation: pulse 1.2s ease-in-out infinite; }
+    .music-meta h3 { font: 1.65rem var(--serif); margin: 0 0 5px; }
+    .music-meta p { color: var(--muted); margin-bottom: 18px; }
+    .music-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .play-btn {
+      width: 49px; height: 49px; border-radius: 50%; border: 0; color: white;
+      background: var(--red); display: grid; place-items: center; font-size: 1.1rem;
+    }
+    .music-status { font-size: .82rem; color: #d6c8cb; }
+    .youtube-wrap { margin: 18px auto 0; max-width: 780px; }
+    .youtube-wrap details { color: var(--muted); font-size: .85rem; }
+    .youtube-wrap summary { cursor: pointer; }
+    .youtube-frame { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 12px; margin-top: 12px; background: #000; }
+    .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+    .memory-card {
+      padding: 0; border: 1px solid var(--line); background: var(--panel); color: inherit;
+      border-radius: 15px; text-align: left; overflow: hidden; min-width: 0;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .memory-card:hover { transform: translateY(-4px); border-color: rgba(226,61,82,.55); }
+    .memory-photo { aspect-ratio: 1/1; position: relative; overflow: hidden; background: #211317; }
+    .memory-photo .placeholder { font-size: .85rem; }
+    .memory-photo .placeholder .heart { font-size: 1.5rem; }
+    .memory-copy { padding: 13px 14px 15px; }
+    .memory-copy h3 { font: 1.15rem var(--serif); margin: 0 0 4px; }
+    .memory-copy p { color: var(--muted); font-size: .84rem; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .gallery-hint { text-align: center; color: #958b8d; font-size: .82rem; margin-top: 16px; }
+    .timeline { max-width: 720px; margin: 0 auto; position: relative; }
+    .timeline::before { content: ""; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(var(--red), rgba(226,61,82,.05)); }
+    .timeline-item { position: relative; padding: 0 0 29px 38px; }
+    .timeline-item::before { content: ""; position: absolute; left: 3px; top: 7px; width: 13px; height: 13px; border-radius: 50%; background: var(--red); box-shadow: 0 0 18px rgba(226,61,82,.35); }
+    .timeline-date { color: #e6a0aa; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+    .timeline-item h3 { font: 1.4rem var(--serif); margin: 4px 0 6px; }
+    .timeline-item p { color: var(--muted); margin: 0; }
+    .video-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .video-card { padding: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--panel); }
+    .video-cover { aspect-ratio: 16/9; display: grid; place-items: center; background: radial-gradient(circle, rgba(226,61,82,.23), transparent 48%), #191316; }
+    .video-cover span { width: 55px; height: 55px; border-radius: 50%; display: grid; place-items: center; background: var(--red); font-size: 1.2rem; }
+    .video-info { padding: 15px; }
+    .video-info h3 { font: 1.2rem var(--serif); margin: 0 0 4px; }
+    .video-info p { color: var(--muted); margin: 0; font-size: .88rem; }
+    .love-reasons { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .reason {
+      min-height: 115px; border: 1px solid var(--line); border-radius: 15px; padding: 19px;
+      background: linear-gradient(145deg, rgba(255,255,255,.04), rgba(226,61,82,.035));
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      font-family: var(--serif); font-size: 1.05rem;
+    }
+    .letter-card {
+      max-width: 760px; margin: 0 auto; padding: clamp(24px, 5vw, 48px);
+      background: linear-gradient(145deg, #f1e5df, #dfc8c4); color: #2a171b;
+      border-radius: 4px 18px 18px 4px; box-shadow: 12px 18px 55px rgba(0,0,0,.25);
+      position: relative;
+    }
+    .letter-card::before { content: ""; position: absolute; left: 10px; top: 0; bottom: 0; border-left: 1px solid rgba(169,35,56,.25); }
+    .letter-card h3 { font: 2rem var(--serif); }
+    .letter-card p { color: #4c3438; }
+    .letter-sign { font: italic 1.2rem var(--serif); text-align: right; margin: 20px 0 0; }
+    .future-box { border: 1px solid rgba(226,61,82,.28); border-radius: 22px; padding: clamp(24px, 5vw, 48px); text-align: center; background: radial-gradient(ellipse at top, rgba(226,61,82,.12), transparent 65%), #111113; }
+    .future-box h2 { font: clamp(2rem, 5vw, 3.5rem) var(--serif); }
+    .future-box p { color: var(--muted); max-width: 570px; margin: 0 auto 22px; }
+    .surprise { display: none; max-width: 650px; margin: 28px auto 0; animation: rise .7s ease both; }
+    .surprise.visible { display: block; }
+    .surprise .final-heart { color: var(--red); font-size: 3rem; }
+    .surprise h3 { font: clamp(1.7rem, 4vw, 2.5rem) var(--serif); }
+    .surprise p { color: #e7dfe1; }
+    footer { border-top: 1px solid var(--line); padding: 30px 20px; text-align: center; color: #91878a; font-size: .82rem; }
+    footer span { color: var(--red); }
+    .modal { position: fixed; inset: 0; z-index: 50; display: none; place-items: center; padding: 18px; background: rgba(0,0,0,.84); backdrop-filter: blur(8px); }
+    .modal.open { display: grid; }
+    .modal-box { width: min(720px, 100%); max-height: 90svh; overflow: auto; background: #151416; border: 1px solid var(--line); border-radius: 18px; position: relative; }
+    .modal-img { width: 100%; max-height: 55svh; object-fit: contain; display: block; background: #090909; }
+    .modal-placeholder { min-height: 240px; display: grid; place-items: center; padding: 25px; background: radial-gradient(circle, rgba(226,61,82,.2), transparent 50%), #171114; text-align: center; color: #e7c7cc; }
+    .modal-text { padding: 22px; }
+    .modal-text h3 { font: 1.7rem var(--serif); margin-bottom: 8px; }
+    .modal-text p { color: var(--muted); white-space: pre-line; }
+    .close-modal { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(0,0,0,.7); color: white; font-size: 1.4rem; z-index: 1; }
+    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .fade-in.in-view { opacity: 1; transform: translateY(0); }
+    .float-heart { position: fixed; z-index: -1; color: var(--red); opacity: 0; pointer-events: none; animation: floatUp 7s linear forwards; }
+    @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes glow { from { transform: scale(.9); opacity: .12; } to { transform: scale(1.15); opacity: .25; } }
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+    @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 15% { opacity: .55; } 100% { transform: translateY(-110vh) rotate(25deg); opacity: 0; } }
+    @media (max-width: 680px) {
+      .nav-note { display: none; }
+      .hero { min-height: auto; padding-top: 64px; padding-bottom: 68px; }
+      .section { padding: 65px 0; }
+      .music-card { grid-template-columns: 100px 1fr; gap: 15px; padding: 14px; }
+      .music-meta h3 { font-size: 1.3rem; }
+      .music-meta p { font-size: .85rem; margin-bottom: 12px; }
+      .gallery { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+      .memory-copy { padding: 9px; }
+      .memory-copy h3 { font-size: .95rem; }
+      .memory-copy p { font-size: .75rem; }
+      .video-grid { grid-template-columns: 1fr; }
+      .love-reasons { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 390px) {
+      .gallery { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .music-card { grid-template-columns: 1fr; }
+      .album-art { max-width: 145px; width: 100%; margin: 0 auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio">V <span>♥</span> M</a>
+    <div class="nav-note">Una historia hecha con amor</div>
+    <a class="nav-note" href="#recuerdos" style="text-decoration:none">Nuestros recuerdos ↓</a>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-inner">
+        <div class="eyebrow">Una historia que quiero contar</div>
+        <h1>Victoria <span class="amp">&</span> Miguel</h1>
+        <p class="hero-subtitle">El inicio de un gran romance</p>
+        <p class="hero-copy">Una historia de dos personas, miles de momentos y un amor que quiero seguir construyendo contigo.</p>
+        <div class="hero-photo">
+          <div class="placeholder" id="heroPlaceholder"><div><span class="heart">♥</span><strong>Nuestra foto va aquí</strong><br><small>Pronto pondremos una foto de los dos</small></div></div>
+          <img id="heroImage" src="" alt="Fotografía de Victoria y Miguel">
+        </div>
+        <div class="date-pill">♥ <span>19 de agosto de 2026</span> ♥</div>
+        <p style="margin:18px 0 24px;color:#f0dfe2;font-family:var(--serif);font-size:1.1rem">Desde ese día, mi historia tiene algo más bonito.</p>
+        <a class="btn" href="#cancion">Descubrir nuestra historia <span aria-hidden="true">↓</span></a>
+        <div class="scroll-hint">Sigue bajando, hay algo para ti</div>
+      </div>
+    </section>
+
+    <section class="section fade-in" id="cancion">
+      <div class="section-heading">
+        <div class="kicker">Dale play a nuestro recuerdo</div>
+        <h2>Nuestra canción</h2>
+        <p>Hay canciones que se escuchan y otras que se sienten. Esta quiero compartirla contigo.</p>
+      </div>
+      <div class="music-card">
+        <div class="album-art" id="albumArt" aria-hidden="true"></div>
+        <div class="music-meta">
+          <h3>Una canción para ti</h3>
+          <p>Victoria <span style="color:var(--red)">♥</span> Miguel</p>
+          <div class="music-controls">
+            <button class="play-btn" id="playMusic" aria-label="Reproducir canción" title="Reproducir canción">▶</button>
+            <span class="music-status" id="musicStatus">Añade el ID de YouTube para activar la música.</span>
+          </div>
+        </div>
+      </div>
+      <div class="youtube-wrap">
+        <details>
+          <summary>Ver el video de nuestra canción</summary>
+          <div id="youtubePlayerContainer"></div>
+          <p id="youtubeHelp" style="margin-top:10px">Cuando elijas la canción, pondremos aquí su video de YouTube.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section fade-in" id="recuerdos">
+      <div class="section-heading">
+        <div class="kicker">Pequeños momentos, grandes sentimientos</div>
+        <h2>Nuestros recuerdos</h2>
+        <p>Cada foto guarda algo que quiero recordar. Toca una para abrirla y leer lo que tengo que decirte.</p>
+      </div>
+      <div class="gallery" id="gallery"></div>
+      <p class="gallery-hint">Toca una fotografía para descubrir su historia ♥</p>
+    </section>
+
+    <section class="section fade-in" id="historia">
+      <div class="section-heading">
+        <div class="kicker">Capítulo a capítulo</div>
+        <h2>La historia de nosotros</h2>
+        <p>El comienzo ya es parte de nuestra historia. Lo demás lo iremos escribiendo juntos.</p>
+      </div>
+      <div class="timeline">
+        <article class="timeline-item">
+          <div class="timeline-date">19 · 08 · 2026</div>
+          <h3>El comienzo de nosotros</h3>
+          <p>El día en que comenzamos oficialmente nuestra historia de amor. Un día que quiero guardar siempre conmigo.</p>
+        </article>
+        <article class="timeline-item">
+          <div class="timeline-date">Un recuerdo especial</div>
+          <h3>Una sonrisa que no olvido</h3>
+          <p>Esos días en los que, sin necesidad de hacer algo extraordinario, terminamos sentados en el piso, en la cama o en cualquier rinconcito, simplemente disfrutando de estar juntos. Esos momentos en los que nos tomamos el tiempo de conocernos un poquito más, hablar de nuestro pasado, contarnos cosas que quizás nunca habíamos compartido, expresar nuestros sueños y hablar de todo lo que queremos lograr en la vida. Me encanta escucharte, descubrir nuevas partes de ti y darme cuenta de que poco a poco vamos encontrando la manera de incluirnos en nuestros planes, de imaginar un futuro en el que estemos los dos. Porque para mí, esos momentos son tan especiales como cualquier aventura. No necesitamos un lugar bonito ni un plan perfecto; me basta con tenerte cerca y sentir que, conversación tras conversación, seguimos construyendo algo nuestro. ❤️.</p>
+        </article>
+        <article class="timeline-item">
+          <div class="timeline-date">Lo que viene</div>
+          <h3>Todavía nos faltan historias</h3>
+          <p>Porque lo más bonito de nuestra historia es que todavía la estamos escribiendo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section fade-in" id="videos">
+      <div class="section-heading">
+        <div class="kicker">Dale play a un recuerdo</div>
+        <h2>Momentos que quiero volver a vivir</h2>
+        <p>Risas, abrazos, salidas y esos instantes que merecen quedarse para siempre.</p>
+      </div>
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+
+    <section class="section fade-in" id="razones">
+      <div class="section-heading">
+        <div class="kicker">Una lista que nunca se termina</div>
+        <h2>Cosas que amo de ti</h2>
+        <p>Hay muchas razones. Estas son solo unas cuantas para empezar.</p>
+      </div>
+      <div class="love-reasons">
+        <div class="reason">Tu forma de hacerme sonreír</div>
+        <div class="reason">La paz que siento contigo</div>
+        <div class="reason">Los pequeños detalles que te hacen tú</div>
+        <div class="reason">Los recuerdos que vamos creando</div>
+        <div class="reason">La ilusión de nuestros planes</div>
+        <div class="reason">Que seas parte de mi historia</div>
+      </div>
+    </section>
+
+    <section class="section fade-in" id="carta">
+      <div class="section-heading">
+        <div class="kicker">Unas palabras para ti</div>
+        <h2>Con todo mi corazón</h2>
+      </div>
+      <article class="letter-card">
+        <p>Mi Victoria,</p>
+        <h3>Quiero que nunca olvides esto.</h3>
+        <p>Hice este pequeño lugar para guardar un poquito de lo que siento por ti. Quiero que aquí vivan nuestras fotos, nuestras canciones, nuestras locuras y esos recuerdos que algún día miraremos sonriendo.</p>
+        <p>No tiene que ser una historia perfecta para ser nuestra. Quiero seguir conociéndote, cuidando lo que tenemos y creando momentos que nos den ganas de volver a vivirlos.</p>
+        <p>Gracias por ser parte de mi vida y por darle a nuestra historia algo que solo tú puedes darle.</p>
+        <p class="letter-sign">Con amor, Miguel ♥</p>
+      </article>
+    </section>
+
+    <section class="section fade-in" id="futuro">
+      <div class="future-box">
+        <div class="kicker">Esto apenas comienza</div>
+        <h2>Lo más bonito todavía está por escribirse</h2>
+        <p>Nos quedan lugares por conocer, canciones por dedicar, fotos por tomar y muchísimos recuerdos por crear.</p>
+        <button class="btn" id="surpriseButton">Tengo una sorpresa para ti ♥</button>
+        <div class="surprise" id="surprise">
+          <div class="final-heart">♥</div>
+          <h3>Victoria, tú eres una parte preciosa de mi historia.</h3>
+          <p>Si llegaste hasta aquí, quiero que sepas que me encantas de todas las maneras posibles. Tú tienes mi corazón, mis ganas, mis besos y esa parte de mí que no quiero compartir con nadie más. Así que sí, preciosa… soy tuyo, eres mía y pienso seguir enamorándome de ti. 😏❤️.</p>
+          <p><strong>Te amo. Y quiero seguir escribiendo esta historia contigo.</strong></p>
+          <div class="hero-photo" style="max-width:330px;margin:22px auto 0">
+            <div class="placeholder" id="finalPlaceholder"><div><span class="heart">♥</span><strong>Una última foto de nosotros</strong></div></div>
+            <img id="finalImage" src="" alt="Victoria y Miguel">
+          </div>
+          <p style="margin-top:18px;font-family:var(--serif);font-size:1.3rem">Victoria & Miguel — nuestra historia continúa.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Hecho con <span>♥</span> por Miguel, para Victoria.</footer>
+
+  <div class="modal" id="photoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <button class="close-modal" id="closeModal" aria-label="Cerrar">×</button>
+      <div id="modalMedia"></div>
+      <div class="modal-text">
+        <h3 id="modalTitle"></h3>
+        <p id="modalDescription"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*
+      PERSONALIZACIÓN RÁPIDA:
+      1) Cambia YOUTUBE_VIDEO_ID por el ID de vuestra canción.
+      2) Cambia las rutas de las fotos cuando las tengas.
+      3) Edita los títulos y textos de memories y videos.
+    */
+    const YOUTUBE_VIDEO_ID = "QkQAjxr9K8s";
+
+    
+const memories = [
+  {
+    title: "Nuestro comienzo",
+    preview: "Todo empezó con nosotros...",
+    description: `Donde empezó algo que hoy significa tanto.
+
+No sé si aquel día imaginábamos todo lo bonito que vendría después, pero hoy miro nuestra historia y me doy cuenta de que conocerte fue una de esas cosas que cambian la vida sin avisar. Entre tantas personas, tantas casualidades y tantos caminos, coincidimos tú y yo. Y qué bonito ha sido comenzar esta historia contigo. Si pudiera volver a ese primer momento, lo viviría otra vez, porque ahora sé que detrás de aquel comienzo estaba una de las personas más especiales de mi vida: tú, Victoria.`,
+    image: "img/foto-01.jpg"
+  },
+  {
+    title: "Tu sonrisa",
+    preview: "Una de mis cosas favoritas...",
+    description: `Esa sonrisa que tiene el poder de alegrarme cualquier día.
+
+Hay algo en tu sonrisa que me encanta de una manera que ni siquiera sé explicar. Me gusta verte sonreír, escuchar tu risa y saber que estás feliz. A veces me quedo mirándote y pienso en lo afortunado que soy de tenerte en mi vida. Ojalá nunca te falten motivos para sonreír y ojalá yo pueda ser uno de ellos muchísimas veces. Quiero seguir viendo esa sonrisa en los días buenos, en los días difíciles y en cada etapa de nuestra vida. Porque si hay algo que quisiera conservar para siempre, es esa felicidad que siento cada vez que te veo sonreír.`,
+    image: "img/foto-02.jpg"
+  },
+  {
+    title: "Un día bonito",
+    preview: "Ojalá repetirlo mil veces...",
+    description: `No necesito un día perfecto, solamente uno que pueda compartir contigo.
+
+Me imagino esos días en los que no importa a dónde vayamos ni qué hagamos. Un día de salir juntos, caminar, conversar, reírnos por cualquier tontería, tomarnos fotografías y disfrutar de nuestra compañía. Un día en el que el tiempo pase demasiado rápido porque estamos felices. Y también esos días sencillos, de quedarnos juntos, abrazarnos y no tener ninguna preocupación. Quiero vivir muchísimos días así contigo, llenar nuestra historia de recuerdos bonitos y que algún día podamos mirar nuestras fotografías y decir: «¿Te acuerdas de aquel día? Qué bonito fue». Porque para mí, un día contigo nunca es un día cualquiera.`,
+    image: "img/foto-03.jpg"
+  },
+  {
+    title: "Contigo",
+    preview: "Los momentos sencillos también...",
+    description: `No quiero solamente los grandes momentos, quiero también los días normales a tu lado.
+
+Quiero las salidas, las aventuras, las fotografías, las conversaciones interminables y las risas que nos hacen olvidar la hora. Pero también quiero los días tranquilos, las tardes sin planes, las bromas tontas, las pequeñas discusiones y hasta esos momentos en los que no hacemos absolutamente nada. Quiero seguir descubriendo lugares contigo y también disfrutar de los lugares más sencillos si estás a mi lado. Porque entendí que no siempre se necesita hacer algo extraordinario para ser feliz. A veces, lo extraordinario es simplemente tenerte conmigo.`,
+    image: "img/foto-04.jpg"
+  },
+  {
+    title: "Un abrazo tuyo",
+    preview: "Mi lugar favorito por un ratito...",
+    description: `Mi lugar favorito también puede ser entre tus brazos.
+
+No sabes lo mucho que significa para mí abrazarte. A veces un abrazo tuyo puede decirme lo que ninguna palabra consigue expresar. Es sentirte cerquita, olvidarme por un momento de todo lo que pasa afuera y simplemente disfrutar de tenerte conmigo. En tus brazos encuentro tranquilidad, cariño y esa sensación tan bonita de estar donde quiero estar. Ojalá nunca nos falten esos abrazos largos, esos que no necesitan explicación y que hacen que uno quisiera detener el tiempo. Porque si hay un lugar en el que siempre quiero estar, es cerquita de ti.`,
+    image: "img/foto-05.jpg"
+  },
+  {
+    title: "Nuestro futuro",
+    preview: "Todavía nos faltan aventuras...",
+    description: `Un hogar, una familia y una historia que siga creciendo.
+
+Algún día me gustaría mirar a mi lado y encontrarte ahí, compartiendo conmigo todo eso que un día imaginamos. Construir nuestro hogar, formar una familia, alcanzar nuestras metas, disfrutar de nuestros logros y tener miles de historias que contar. Quiero que seamos un equipo, que nos apoyemos cuando las cosas sean difíciles y que celebremos juntos cuando la vida nos sonría. Quiero que tengamos una vida de la que ambos nos sintamos orgullosos, llena de momentos que algún día recordemos con una sonrisa. No sé exactamente qué nos tiene preparado la vida, pero sí sé algo: si está en mis manos, quiero esforzarme cada día para que ese futuro tenga tu nombre junto al mío. Te amo, Victoria. Y quiero que esta historia sea apenas el comienzo. ❤️`,
+    image: "img/foto-06.jpg"
+  }
+];
+
+    const videos = [
+      { title: "Un momento para guardar", description: "Aquí irá uno de sus videos favoritos.", file: "videos/video-01.mp4" },
+      { title: "Nuestra pequeña película", description: "Un video de una salida, una risa o un recuerdo juntos.", file: "videos/video-02.mp4" }
+    ];
+
+    const gallery = document.getElementById("gallery");
+    memories.forEach((memory, index) => {
+      const card = document.createElement("button");
+      card.className = "memory-card";
+      card.type = "button";
+      card.setAttribute("aria-label", "Abrir recuerdo: " + memory.title);
+      card.innerHTML = `
+        <div class="memory-photo">
+          <div class="placeholder"><div><span class="heart">♥</span><strong>Foto ${String(index + 1).padStart(2, "0")}</strong><br><small>Añadiremos vuestro recuerdo</small></div></div>
+          <img src="${memory.image}" alt="${memory.title}" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="memory-copy"><h3>${memory.title}</h3><p>${memory.preview}</p></div>`;
+      const img = card.querySelector("img");
+      img.addEventListener("load", () => {
+        if (img.naturalWidth > 0) card.querySelector(".placeholder").style.display = "none";
+      });
+      card.addEventListener("click", () => openMemory(memory));
+      gallery.appendChild(card);
+    });
+
+    const videoGrid = document.getElementById("videoGrid");
+    videos.forEach((video, index) => {
+      const card = document.createElement("article");
+      card.className = "video-card";
+      card.innerHTML = `
+        <div class="video-cover"><span>▶</span></div>
+        <div class="video-info"><h3>${video.title}</h3><p>${video.description}</p></div>`;
+      card.style.cursor = "pointer";
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+      const playVideo = () => {
+        const modal = document.getElementById("photoModal");
+        document.getElementById("modalTitle").textContent = video.title;
+        document.getElementById("modalDescription").textContent = video.description;
+        document.getElementById("modalMedia").innerHTML = `
+          <video controls playsinline style="width:100%;max-height:55svh;background:#000;display:block">
+            <source src="${video.file}" type="video/mp4">
+            Tu navegador no puede reproducir este video.
+          </video>`;
+        modal.classList.add("open");
+        document.body.style.overflow = "hidden";
+      };
+      card.addEventListener("click", playVideo);
+      card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); playVideo(); }});
+      videoGrid.appendChild(card);
+    });
+
+    function openMemory(memory) {
+      const modal = document.getElementById("photoModal");
+      const media = document.getElementById("modalMedia");
+      media.innerHTML = `<div class="modal-placeholder"><div><div style="font-size:2.5rem;color:var(--red)">♥</div><strong>La foto de este recuerdo irá aquí</strong></div></div>`;
+      if (memory.image) {
+        const img = new Image();
+        img.className = "modal-img";
+        img.alt = memory.title;
+        img.src = memory.image;
+        img.onload = () => { media.innerHTML = ""; media.appendChild(img); };
+      }
+      document.getElementById("modalTitle").textContent = memory.title;
+      document.getElementById("modalDescription").textContent = memory.description;
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+    function closeModal() {
+      document.getElementById("photoModal").classList.remove("open");
+      document.getElementById("modalMedia").innerHTML = "";
+      document.body.style.overflow = "";
+    }
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    document.getElementById("photoModal").addEventListener("click", e => {
+      if (e.target.id === "photoModal") closeModal();
+    });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+    document.getElementById("surpriseButton").addEventListener("click", () => {
+      const surprise = document.getElementById("surprise");
+      surprise.classList.toggle("visible");
+      document.getElementById("surpriseButton").textContent = surprise.classList.contains("visible") ? "Cerrar sorpresa ♥" : "Tengo una sorpresa para ti ♥";
+      if (surprise.classList.contains("visible")) surprise.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".fade-in").forEach(el => observer.observe(el));
+
+    function createFloatingHeart() {
+      const heart = document.createElement("span");
+      heart.className = "float-heart";
+      heart.textContent = Math.random() > .5 ? "♥" : "♡";
+      heart.style.left = (5 + Math.random() * 90) + "vw";
+      heart.style.bottom = "-25px";
+      heart.style.fontSize = (12 + Math.random() * 14) + "px";
+      heart.style.animationDuration = (6 + Math.random() * 4) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 10500);
+    }
+    let heartTimer = setInterval(createFloatingHeart, 2300);
+
+    // Portada y foto final: cuando existan los archivos, se muestran automáticamente.
+    function setupOptionalImage(imgId, placeholderId, src) {
+      const img = document.getElementById(imgId);
+      img.src = src;
+      img.onload = () => { document.getElementById(placeholderId).style.display = "none"; };
+      img.onerror = () => { img.style.display = "none"; };
+    }
+    setupOptionalImage("heroImage", "heroPlaceholder", "img/portada.jpg");
+    setupOptionalImage("finalImage", "finalPlaceholder", "img/foto-final.jpg");
+
+    // Reproductor YouTube. El botón personalizado alterna play/pausa cuando se configure el ID.
+    let ytPlayer = null;
+    let ytReady = false;
+    const playButton = document.getElementById("playMusic");
+    const musicStatus = document.getElementById("musicStatus");
+    const albumArt = document.getElementById("albumArt");
+    const youtubeContainer = document.getElementById("youtubePlayerContainer");
+    const youtubeHelp = document.getElementById("youtubeHelp");
+    const hasYoutubeId = YOUTUBE_VIDEO_ID && YOUTUBE_VIDEO_ID !== "PON_AQUI_ID_DE_YOUTUBE";
+
+    if (hasYoutubeId) {
+      youtubeContainer.innerHTML = '<div id="youtubePlayer"></div>';
+      youtubeHelp.textContent = "Usa el botón rojo para reproducir o pausar. El video también estará disponible aquí.";
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+      window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player("youtubePlayer", {
+          videoId: YOUTUBE_VIDEO_ID,
+          playerVars: { playsinline: 1, rel: 0 },
+          events: {
+            onReady: function() {
+              ytReady = true;
+              musicStatus.textContent = "Tu canción está lista. Toca play ♥";
+              const frame = document.querySelector("#youtubePlayer iframe");
+              if (frame) { frame.classList.add("youtube-frame"); frame.setAttribute("title", "Nuestra canción en YouTube"); }
+            },
+            onStateChange: function(event) {
+              if (event.data === YT.PlayerState.PLAYING) {
+                playButton.textContent = "Ⅱ";
+                playButton.setAttribute("aria-label", "Pausar canción");
+                musicStatus.textContent = "Reproduciendo nuestra canción…";
+                albumArt.classList.add("playing");
+              } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                playButton.textContent = "▶";
+                playButton.setAttribute("aria-label", "Reproducir canción");
+                musicStatus.textContent = event.data === YT.PlayerState.ENDED ? "La canción terminó. Puedes volver a escucharla." : "Canción en pausa.";
+                albumArt.classList.remove("playing");
+              }
+            }
+          }
+        });
+      };
+    } else {
+      playButton.disabled = true;
+      playButton.style.opacity = ".55";
+      playButton.title = "Configura primero el ID de YouTube en principal.js";
+      playButton.setAttribute("aria-label", "Falta configurar la canción de YouTube");
+      youtubeHelp.textContent = "La música se activará cuando pongas el ID de vuestra canción en el archivo principal.js.";
+    }
+    playButton.addEventListener("click", () => {
+      if (!ytReady || !ytPlayer) {
+        musicStatus.textContent = "Primero configura el ID de la canción en el código.";
+        return;
+      }
+      const state = ytPlayer.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+      else ytPlayer.playVideo();
+    });
+  </script>
+</body>
+</html>
