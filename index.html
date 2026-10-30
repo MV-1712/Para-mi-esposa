@@ -215,6 +215,230 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
+    
+/* =========================================
+   RESPONSIVE GENERAL PARA CELULARES
+========================================= */
+
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img, video, iframe {
+  max-width: 100%;
+}
+
+.hero,
+.section,
+.future-box,
+.letter-card,
+.music-card,
+.video-card,
+.memory-card {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Fotografías */
+.hero-photo {
+  width: min(100%, 440px);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.hero-photo img,
+.memory-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Galería */
+.gallery {
+  width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.memory-card {
+  width: 100%;
+}
+
+/* Videos */
+.video-grid {
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.video-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.video-card video {
+  display: block;
+  width: 100%;
+  max-height: 65svh;
+  object-fit: contain;
+}
+
+/* Reproductor de YouTube */
+.youtube-wrap,
+.youtube-frame,
+#youtubePlayer,
+#youtubePlayer iframe {
+  max-width: 100%;
+}
+
+.youtube-frame,
+#youtubePlayer iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+/* Ventanas emergentes con scroll */
+.modal {
+  padding: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-box {
+  width: min(720px, 100%);
+  max-height: 90vh;
+  max-height: 90svh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-img {
+  width: 100%;
+  max-height: 55svh;
+  object-fit: contain;
+}
+
+/* Textos largos */
+.modal-text,
+.letter-card,
+.timeline-item,
+.music-meta {
+  overflow-wrap: anywhere;
+}
+
+/* Evitar que elementos se salgan horizontalmente */
+* {
+  min-width: 0;
+}
+
+/* Ajustes específicos para celulares */
+@media (max-width: 680px) {
+
+  .section {
+    width: calc(100% - 30px);
+  }
+
+  .hero {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-photo {
+    width: min(100%, 440px);
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .video-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .video-card {
+    width: 100%;
+  }
+
+  .video-cover {
+    width: 100%;
+  }
+
+  .music-card {
+    width: 100%;
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  .letter-card {
+    padding: 25px 22px 25px 30px;
+  }
+
+  .future-box {
+    padding: 25px 18px;
+  }
+
+  .love-reasons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .modal {
+    align-items: center;
+    padding: 10px;
+  }
+
+  .modal-box {
+    width: 100%;
+    max-height: 90svh;
+  }
+
+  .modal-img {
+    max-height: 48svh;
+  }
+
+  .modal-text {
+    padding: 18px;
+  }
+}
+
+/* Celulares pequeños */
+@media (max-width: 390px) {
+
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .music-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .album-art {
+    max-width: 145px;
+  }
+
+  .love-reasons {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+}
+
+/* Respetar el tamaño disponible de la pantalla */
+@supports (height: 100dvh) {
+  .modal-box {
+    max-height: 90dvh;
+  }
+}
+
   </style>
 </head>
 <body>
